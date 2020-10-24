@@ -45,8 +45,10 @@ function more_borders(subtitles, selected_lines, active_lines)
 
     local _, styles = karaskel.collect_head(subtitles)
     local count = 0
+    original_lines = {}
     for _, index in ipairs(selected_lines) do
-        local l = subtitles[index + count * layers]
+        original_index = index + count * layers
+        local l = subtitles[original_index]
         for i, config in ipairs(configs) do
             local size, color, is_style = config.size, config.color, config.is_style
             if is_style then
@@ -55,13 +57,15 @@ function more_borders(subtitles, selected_lines, active_lines)
             local new_l = util.copy(l)
             new_l.layer = new_l.layer + layers - i
             new_l.text = "{\\3c" .. util.color_from_style(color) .. "\\bord" .. size .. "}" .. new_l.text
-            subtitles.insert(index + count * layers + i, new_l)
+            subtitles.insert(original_index + i, new_l)
+            table.insert(original_lines, original_index)
         end
         l.layer = l.layer + layers
         subtitles[index + count * layers] = l
         count = count + 1
     end
     aegisub.set_undo_point(script_name)
+    return original_lines
 end
 
 aegisub.register_macro(script_name, tr(script_description), more_borders)
