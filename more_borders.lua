@@ -5,7 +5,7 @@ local tr = aegisub.gettext
 script_name = tr("More borders")
 script_description = tr("Create more borders for subtitles.")
 script_author = "Rolling Snack"
-script_version = "1.0"
+script_version = "1.1"
 
 include("karaskel.lua")
 
@@ -56,7 +56,7 @@ function more_borders(subtitles, selected_lines, active_lines)
             end
             local new_l = util.copy(l)
             new_l.layer = new_l.layer + layers - i
-            new_l.text = "{\\3c" .. util.color_from_style(color) .. "\\bord" .. size .. "}" .. new_l.text
+            new_l.text = "{\\1a&HFF&\\3c" .. util.color_from_style(color) .. "\\bord" .. size .. "}" .. new_l.text
             subtitles.insert(original_index + i, new_l)
             table.insert(original_lines, original_index)
         end
